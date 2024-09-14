@@ -41,7 +41,8 @@ class MakeUser extends Command
     public function handle()
     {
         $email = $this->ask("What is the new user's email address?");
-        $name = $this->ask("What is the new user's name?") ?: '';
+        $first_name = $this->ask("What is the new user's first name?") ?: '';
+        $last_name = $this->ask("What is the new user's last name?") ?: '';
         $password = $this->secret("What is the new user's password? (blank generates a random one)") ?: Str::random(32);
         $encrypt = $this->confirm('Should the password be encrypted?', true);
         $sendReset = $this->confirm('Do you want to send a password reset email?');
@@ -61,7 +62,7 @@ class MakeUser extends Command
             $this->validateEmail($email);
 
             app(config('auth.providers.users.model'))->create(array_merge(
-                compact('email', 'name', 'password'),
+                compact('email', 'first_name', 'last_name', 'password'),
                 $this->customFields
             ));
 
